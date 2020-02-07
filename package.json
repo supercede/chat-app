@@ -1,0 +1,53 @@
+{
+  "name": "chat-app",
+  "version": "1.0.0",
+  "description": "A simple chat app built with nodejs and socket io",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run clean && npm run build-babel",
+    "build-babel": "babel -d ./build ./src -s",
+    "clean": "rm -rf .nyc_output build coverage && mkdir build",
+    "lint": "eslint \"**/*.js\"",
+    "start": "node ./build/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/supercede/chat-app.git"
+  },
+  "keywords": [
+    "nodejs",
+    "web",
+    "sockets",
+    "chat",
+    "app",
+    "socket.io"
+  ],
+  "author": "Supercede",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/supercede/chat-app/issues"
+  },
+  "homepage": "https://github.com/supercede/chat-app#readme",
+  "dependencies": {
+    "@babel/cli": "^7.8.4",
+    "babel-eslint": "^10.0.3",
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/node": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "cross-env": "^7.0.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.18.3",
+    "nyc": "^15.0.0",
+    "prettier": "^1.19.1"
+  }
+}
