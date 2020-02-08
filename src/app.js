@@ -1,19 +1,40 @@
 import express from 'express';
 import { config } from 'dotenv';
+import http from 'http';
 import path from 'path';
+import logger from 'morgan';
+import socketio from 'socket.io';
+
 config();
 
 const app = express();
+const server = http.createServer(app);
+const io = socketio(server);
 
+const { NODE_ENV, port } = process.env;
+
+if (NODE_ENV === 'development') {
+  app.use(logger('dev'));
+}
 const staticPath = path.join(__dirname, '../public');
 app.use(express.static(staticPath));
 
-const port = process.env.PORT;
+const message = 'Welcome';
+io.on('connection', socket => {
+  console.log('New Connection');
 
-app.get('/', (req, res) => {
-  res.render('index');
+  socket.emit('message', message);
+  socket.broadcast.emit('message', 'A new user has joined');
+
+  socket.on('sendMessage', userMessage => {
+    io.emit('message', userMessage);
+  });
+
+  socket.on('disconnect', () => {
+    io.emit('message', 'A user has disconnected');
+  });
 });
 
-app.listen(port, () => {
-  console.log('App listening on port ' + port);
+server.listen(port, () => {
+  console.log(`App listening on port ${port}`);
 });
