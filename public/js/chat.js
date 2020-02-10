@@ -3,11 +3,27 @@ const msgForm = document.getElementById('message-form');
 const locationBtn = document.getElementById('send-location');
 const msgInput = document.getElementById('message');
 const sendBtn = document.querySelector('.send-btn');
+const messages = document.getElementById('messages');
+
+//templates
+const messageTemplate = document.querySelector('#message-template').innerHTML;
+const locationTemplate = document.querySelector('#location-template').innerHTML;
 
 const socket = io();
 
 socket.on('message', message => {
-  console.log(message);
+  const html = Mustache.render(messageTemplate, {
+    message
+  });
+  messages.insertAdjacentHTML('beforeend', html);
+});
+
+socket.on('locationMessage', locationURL => {
+  const loc = Mustache.render(locationTemplate, {
+    location: locationURL
+  });
+
+  messages.insertAdjacentHTML('beforeend', loc);
 });
 
 msgForm.addEventListener('submit', e => {
