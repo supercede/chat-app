@@ -19,7 +19,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-const { NODE_ENV, port = 5000 } = process.env;
+const { NODE_ENV, PORT = 5000 } = process.env;
 
 if (NODE_ENV === 'development') {
   app.use(logger('dev'));
@@ -97,6 +97,6 @@ io.on('connection', socket => {
   });
 });
 
-server.listen(port, () => {
-  console.log(`App listening on port ${port}`);
+server.listen(PORT, () => {
+  console.log(`App listening on port ${PORT}`);
 });
