@@ -12,15 +12,21 @@ const locationTemplate = document.querySelector('#location-template').innerHTML;
 const socket = io();
 
 socket.on('message', message => {
+  console.log(message);
+
   const html = Mustache.render(messageTemplate, {
-    message
+    message: message.message,
+    createdAt: moment(message.createdAt).format('kk:mm')
   });
   messages.insertAdjacentHTML('beforeend', html);
 });
 
 socket.on('locationMessage', locationURL => {
+  console.log(locationURL);
+
   const loc = Mustache.render(locationTemplate, {
-    location: locationURL
+    location: locationURL.url,
+    createdAt: moment(message.createdAt).format('kk:mm')
   });
 
   messages.insertAdjacentHTML('beforeend', loc);

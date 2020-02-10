@@ -5,6 +5,7 @@ import path from 'path';
 import logger from 'morgan';
 import socketio from 'socket.io';
 import Filter from 'bad-words';
+import { generateMessage, generatelocationMessage } from './utils/messages';
 
 config();
 
@@ -22,13 +23,12 @@ app.use(express.static(staticPath));
 
 const filter = new Filter();
 filter.removeWords('hells', 'sadist', 'nigga');
-const message = 'Welcome';
 
 io.on('connection', socket => {
   console.log('New Connection');
 
-  socket.emit('message', message);
-  socket.broadcast.emit('message', 'A new user has joined');
+  socket.emit('message', generateMessage('Welcome'));
+  socket.broadcast.emit('message', generateMessage('A new user has joined'));
 
   //filter words with acknowlegement
   socket.on('sendMessage', (userMessage, callback) => {
@@ -36,20 +36,17 @@ io.on('connection', socket => {
     //   return callback('profanity not allowed');
     // }
     userMessage = filter.clean(userMessage);
-    io.emit('message', userMessage);
+    io.emit('message', generateMessage(userMessage));
     callback();
   });
 
   socket.on('sendLocation', ({ latitude, longitude }, callback) => {
-    io.emit(
-      'locationMessage',
-      `https://google.com/maps?q=${latitude},${longitude}`
-    );
+    io.emit('locationMessage', generatelocationMessage(latitude, longitude));
     callback();
   });
 
   socket.on('disconnect', () => {
-    io.emit('message', 'A user has disconnected');
+    io.emit('message', generateMessage('A user has disconnected'));
   });
 });
 
