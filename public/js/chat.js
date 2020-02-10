@@ -39,8 +39,6 @@ const autoScroll = () => {
 };
 
 socket.on('message', message => {
-  console.log(message);
-
   const html = Mustache.render(messageTemplate, {
     username: message.name,
     message: message.message,
@@ -51,8 +49,6 @@ socket.on('message', message => {
 });
 
 socket.on('locationMessage', locationURL => {
-  console.log(locationURL);
-
   const loc = Mustache.render(locationTemplate, {
     username: locationURL.name,
     location: locationURL.url,
@@ -65,7 +61,7 @@ socket.on('locationMessage', locationURL => {
 
 socket.on('roomData', ({ room, users }) => {
   const menu = Mustache.render(sidebarTemplate, {
-    room,
+    room: room.toUpperCase(),
     users
   });
   sidebar.innerHTML = menu;
@@ -85,7 +81,6 @@ msgForm.addEventListener('submit', e => {
     if (err) {
       return console.log(err);
     }
-    console.log(`Message delivered`);
   });
 });
 
@@ -103,7 +98,6 @@ locationBtn.addEventListener('click', () => {
       },
       () => {
         locationBtn.removeAttribute('disabled');
-        console.log('You shared your location');
       }
     );
   });
